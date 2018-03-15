@@ -1,0 +1,11 @@
+#!/opt/anaconda3/bin/python3
+
+#
+# Random Generation.
+#
+
+import numpy
+x = numpy.random.normal(1.78,0.1,30)
+y = numpy.random.normal(1.66,0.1,30)
+
+print("avg_x = {avg}".format(avg =   numpy.sum(x)/len(x)))

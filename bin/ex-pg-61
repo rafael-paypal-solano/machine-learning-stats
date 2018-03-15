@@ -1,0 +1,24 @@
+#!/opt/anaconda3/bin/python3
+
+#
+# Pearson correlation test: test association between two quantitative variables
+#
+
+import numpy
+import scipy.stats as stats
+
+n = 10
+x = numpy.random.normal(size=n)
+
+y = 2 * x + 1
+cor, p = stats.pearsonr(x, y)
+print("Perfect correlation:", cor, p) # |cor| = 1.0, p < 0.05 (actually p == 0). Perfect correlation
+
+y = 2 * x + numpy.random.normal(size=n)
+cor, p = stats.pearsonr(x, y)
+print("Pretty high correlation:", cor, p) #|cor| > 0.85, p < 0.05 Pretty high correlation.
+
+
+y = numpy.cos(numpy.random.normal(size=n))
+cor, p = stats.pearsonr(x, y)
+print("Pretty low correlation:", cor, p) # |cor| < 0.25, p > 0.5. Pretty low correlation.
