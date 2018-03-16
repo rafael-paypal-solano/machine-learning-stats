@@ -1,0 +1,18 @@
+#!/opt/anaconda3/bin/python3
+
+import numpy as numpy
+import scipy.stats as stats
+
+m_k = numpy.array([10.5, 10.01, 10.01, 10.01, 10.01, 10.01, 10.01]) # means
+s_k = numpy.array([1, 1, 1, 1, 1, 1, 1]) # standard deviations
+n_k = numpy.array([30, 30, 30, 30, 30, 30, 30]) # sizes
+grp = [0, 1, 2, 3, 4, 5, 6]
+n = numpy.sum(n_k)
+label = numpy.hstack([[k] * n_k[k] for k in grp])
+y = numpy.zeros(n)
+
+for k in grp:
+	y[label == k] = numpy.random.normal(m_k[k], s_k[k], n_k[k])
+
+fval, pval = stats.f_oneway(y[label == 0], y[label == 1], y[label == 2], y[label == 3], y[label == 4], y[label == 5], y[label == 6])
+print(fval, pval)

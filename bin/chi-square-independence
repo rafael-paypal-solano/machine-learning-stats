@@ -1,0 +1,22 @@
+#!/opt/anaconda3/bin/python3
+
+import numpy
+import pandas
+import scipy.stats as stats
+
+canalar_tumor = numpy.array([1] * 10 + [0] * 5)
+meta = numpy.array([1] * 8 + [0]*6 + [1])
+crosstab = pandas.crosstab(canalar_tumor, meta, rownames=['canalar_tumor'], colnames=['meta'])
+
+print('Observed Table')
+print('--------------')
+
+print(crosstab)
+chi2, pval, dof, expected = stats.chi2_contingency(crosstab)
+
+print("Statistics:")
+print("-----------")
+print("Chi2 = %f, pval = %f, dof = %d" % (chi2, pval, dof))
+print("Expected table:")
+print("---------------")
+print(expected)
