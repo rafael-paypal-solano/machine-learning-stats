@@ -1,0 +1,34 @@
+#!/opt/anaconda3/bin/python3
+
+import scipy.stats as stats
+import numpy
+numpy.random.seed(seed=42)
+nx, ny = 100, 50
+
+def report(locx, locy, tval, pval):	
+	reject = "REJECT H0 (different)" if pval < 0.05 else "DO NOT REJECT H0 (equals)"
+	print("locx = %8.3f, locy = %8.3f, t=%8.2f, p=%8.2f: %s" % (locx, locy, tval, pval, reject))
+
+def report_eq(locx,locy):
+	x = numpy.random.normal(loc = locx, scale = 0.12, size = nx)
+	y = numpy.random.normal(loc = locy, scale = 0.12, size = ny)
+	tval, pval = stats.ttest_ind(x, y, equal_var = True)
+	report(locx, locy, tval, pval)
+
+def report_diff(locx,locy):
+	x = numpy.random.normal(loc = locx, scale = 0.08, size = nx)
+	y = numpy.random.normal(loc = locy, scale = 0.12, size = ny)
+	tval, pval = stats.ttest_ind(x, y, equal_var = False)
+	report(locx, locy, tval, pval)
+
+print("Test with equal variances")
+report_eq(1.785, 1.79)
+report_eq(1.76, 1.79)
+report_eq(2.50, 1.79)
+
+print()
+
+print("Test with diference variances")
+report_diff(1.785, 1.79)
+report_diff(1.76, 1.79)
+report_diff(2.50, 1.79)

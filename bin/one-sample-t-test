@@ -1,0 +1,42 @@
+#!/opt/anaconda3/bin/python3
+
+
+#
+# Page 62
+# This is a two-sided test for the null hypothesis that the expected value (mean) of a sample of independent observations a is equal to the 
+# given population mean.
+#
+# (http://benalexkeen.com/comparative-statistics-in-python-using-scipy/)
+# If p-value iis far less than the standard thresholds of 0.05 or 0.01, then we reject the null hypothesis and we can say 
+# there is a statistically significant difference between the sample mean and the population mean
+#
+
+#
+#
+# It goes on to say that scipy always gives the test statistic as signed.
+# This means that given p and t values from a two-tailed test,
+# you would reject the null hypothesis of a greater-than test when p/2 < alpha and t > 0, and of a less-than test when p/2 < alpha and t < 0
+#
+#
+#
+
+import numpy
+import scipy.stats as stats
+numpy.random.seed(seed=42)
+
+n = 1000
+x = numpy.random.normal(loc = 1.78, scale=0.5, size=n)
+
+def report(m, thereshold):
+    tval, pval = stats.stats.ttest_1samp(x, m)
+    reject = "REJECT H0 (different)" if pval < thereshold else "DO NOT REJECT H0 (equals)"
+    print(m, pval, reject)
+
+
+
+report(0.5, 0.05)
+report(1.77, 0.05)
+report(1.775, 0.05)
+report(1.78, 0.05)
+report(1.785, 0.05)
+report(2.5, 0.05)
