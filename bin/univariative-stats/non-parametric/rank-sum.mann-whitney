@@ -1,0 +1,38 @@
+#!/opt/anaconda3/bin/python3
+
+#
+# In statistics, the Mann–Whitney U test (also called the Mann–Whitney–Wilcoxon, Wilcoxon rank-sum test or
+# Wilcoxon–Mann–Whitney test) is a nonparametric test of the null hypothesis that two samples come from the same
+# population against an alternative hypothesis, especially that a particular population tends to have larger values than the
+# other. It can be applied on unknown distributions contrary to e.g. a t-test that has to be applied only on normal distributions,
+# and it is nearly as efficient as the t-test on normal distributions.
+#
+#   H0: There is not statistically significant difference between populations.
+#   H1: A population tends to have higher valuers than the other.
+#
+
+import scipy.stats as stats
+import numpy
+
+n = 100
+
+# Bussiness Volume Time 0
+
+bv0 = numpy.random.normal(loc=1, scale=.1, size=n)
+
+# Bussiness Volume Time 1
+
+# Yields a scenario with statistically significant difference.
+# bv1 = numpy.random.normal(loc=1.2, scale=.1, size=n)
+
+
+# Yields a scenario with no-statistically significant difference.
+bv1 = numpy.random.normal(loc=1, scale=.1, size=n)
+
+# paired t-test
+
+print(stats.ttest_ind(bv0, bv1))
+
+
+# Wilcoxon
+print(stats.mannwhitneyu(bv0, bv1))
