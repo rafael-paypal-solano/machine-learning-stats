@@ -1,0 +1,38 @@
+#!/opt/anaconda3/bin/python3
+
+import numpy
+from scipy import linalg
+import statsmodels.api as api
+
+#
+#
+# H0: Coefficient is equal to 0.0
+# H1: Coefficient is not equal to 0.0
+#
+numpy.random.seed(seed=42)
+
+# Dataset
+
+N, P = 50, 4
+X = numpy.random.normal(size = N * P).reshape((N, P))
+
+# Our model needs an intercept so we add a column of 1s.    
+X[:, 0] = 1
+
+print("X")
+print(X[:5, :])
+
+B = numpy.array([10, 1., .5, 0.1])
+e = numpy.random.normal(size = N)
+y = numpy.dot(X, B) + e/5
+
+x = linalg.pinv2(X) # X inv
+b = numpy.dot(x, y)
+
+print("numpy fit")
+print (b)
+
+model = api.OLS(y, X).fit()
+
+print("statsmodel fit")
+print(model.summary())
