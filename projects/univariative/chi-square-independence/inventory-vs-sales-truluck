@@ -1,7 +1,0 @@
-#!/bin/bash
-
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-SOLUTION_DIR="$(cd "${SCRIPT_DIR}/../../../" && pwd)" 
-DATA_INPUT_DIR="${SOLUTION_DIR}/data/input"
-
-"${SCRIPT_DIR}/inventory-vs-sales" ${DATA_INPUT_DIR}/main_inventory.csv ${DATA_INPUT_DIR}/sales_invoice.csv 55
