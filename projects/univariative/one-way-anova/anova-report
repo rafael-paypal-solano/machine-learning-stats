@@ -8,4 +8,4 @@ PYTHON="/opt/anaconda3/bin/python3"
 PYTHONPATH="${SOLUTION_DIR}/lib"
 export PYTHONPATH
 
-$PYTHON "${SCRIPT_DIR}/inventory.py" ${DATA_INPUT_DIR}/main_inventory.csv ${DATA_OUTPUT_DIR}/main_inventory_crosstab.csv 1 
+$PYTHON "${SCRIPT_DIR}/anova-report.py" $1

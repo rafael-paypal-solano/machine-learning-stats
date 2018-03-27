@@ -1,0 +1,5 @@
+# Plant Polluting, Exercise 13.15 in Mathematical Statistics 7th Ed. #
+
+Water samples were taken at four different locations in a river to determine whether the quantity of dissolved oxygen, a measure of water pollution, differed from one location to another. Locations 1 and 2 were selected above an industrial plant, one near the shore and the other in midstream; location 3 was adjacent to the industrial water discharge for the plant; and location 4 was slightly downriver in midstream. Five water specimens were randomly selected at each location, but one specimen, from location 4, was lost in the laboratory. The data are shown in the accompanying table (the greater the
+pollution, the lower will be the dissolved oxygen readings). Do the data provide sufficient evidence to indicate a difference in mean dissolved
+oxygen content for the four locations? Give bounds for the attained significance level.

@@ -7,5 +7,5 @@
 ## Practice ##
 
 1. Mathematical Statistics: 
-⋅⋅1. 13.1, 13.7 - 13.8 and 13.30
+⋅⋅1. 13.7 - 13.15 and 13.30
 
