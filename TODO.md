@@ -1,8 +1,11 @@
 # TODO LIST # 
 
-## I Find out the Math ##
+## Read ##
 
-1. OK bin/univariative-stats/non-parametric/rank-order-correlation.spearman
-2. OK bin/univariative-stats/non-parametric/signed-rank.wilcoxon
+1. Mathematical Statistics, 13.5 - 13.13
 
-## II Document H0 & H1 in all Scripts##
+## Practice ##
+
+1. Mathematical Statistics: 
+⋅⋅1. 13.1, 13.7 - 13.8 and 13.30
+
