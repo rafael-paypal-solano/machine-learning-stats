@@ -1,2 +1,3 @@
 # Concrete Strength, Exercise 13.9 in Mathematical Statistics 7th Ed. #
+
 In a comparison of the strengths of concrete produced by four experimental mixes, three specimens were prepared from each type of mix. Each of the 12 specimens was subjected to in- creasingly compressive loads until breakdown. The accompanying table gives the compressive loads, in tons per square inch, attained at breakdown. Specimen numbers 1–12 are indicated in parentheses for identification purposes.

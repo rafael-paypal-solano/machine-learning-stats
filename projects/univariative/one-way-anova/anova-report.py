@@ -1,28 +1,10 @@
 import pandas
 import sys
 from scipy import stats
-import pathos.multiprocessing as multiprocessing
 import numpy
+import numeric
 
 
-def CM(samples, pool = None):
-    """
-        Args:
-            samples (tuple of sequences): A sequence is a tuple, list, set or 1-dim numpy.ndarray .
-            pool (optional pathos.multiprocessing.Pool or multiprocessing.Pool): Required to parallelize operations.            
-        Return:
-
-    """    
-
-    if pool is None:
-        processing_pool = multiprocessing.Pool(multiprocessing.cpu_count())
-    else:
-        processing_pool = pool
-
-    n = numpy.sum(tuple(map(lambda sample: len(sample),samples)))
-    s = numpy.square(numpy.sum(processing_pool.map(lambda x: numpy.sum(x), samples)))
-
-    return (s / n)
 
 if __name__ == "__main__":
     input_file = sys.argv[1]
@@ -48,4 +30,12 @@ if __name__ == "__main__":
     print("\tCritical Values: F =%12.4f, P=%8.5f" % (F, P))
     print("\tF-Test: Are all means equals (H0) ?  %s " % ("Reject" if P < alpha else "Don't Reject")  )
 
-    print(standard_squared_error(samples))
+    print("\tSST:\t\t\t%12.4f" % numeric.sum_of_squares_total(samples))    
+    print("\tSSE:\t\t\t%12.4f" % numeric.standard_squared_error(samples))
+    print("\tMSE:\t\t\t%12.4f" %numeric.mean_squared_error(samples))
+    print("\tConfidence Intervals:")
+
+    if P < alpha:
+        for i in range(0, len(samples)):
+            mean, length = numeric.oneway_anova_interval(samples, i, alpha)
+            print("\t%12.4f %12.4f" % (mean, length))

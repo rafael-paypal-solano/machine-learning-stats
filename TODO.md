@@ -9,3 +9,6 @@
 1. Mathematical Statistics: 
 ⋅⋅1. 13.7 - 13.15 and 13.30
 
+## Document ## 
+
+Document all functions in lib/numeric/anova.py and lib/numeric/reductors.py
