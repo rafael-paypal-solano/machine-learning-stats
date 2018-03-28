@@ -12,11 +12,11 @@ print('Observed Table')
 print('--------------')
 
 print(crosstab)
-chi2, pval, dof, expected = stats.chi2_contingency(crosstab)
+chi2, pval, dof, expected = stats.chi2_contingency(crosstab) 
 
 print("Statistics:")
 print("-----------")
-print("Chi2 = %f, pval = %f, dof = %d" % (chi2, pval, dof))
+print("Chi2 = %f, pval = %f, dof = %d" % (chi2, pval, dof)) # HO: There is no relationship between categorical variables 
 print("Expected table:")
 print("---------------")
 print(expected)
