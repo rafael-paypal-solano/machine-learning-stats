@@ -2,22 +2,15 @@ import numpy
 import scipy.stats as stats
 import pathos.multiprocessing as multiprocessing
 
-MODELS = (
-    lambda x: 1
-    lambda x: x,    
-    lambda x: numpy.square(x),
-    lambda x: numpy.exp(x),
-    lambda x: numpy.log(x),
-    lambda x: numpy.cos(x),
-    lambda x: numpy.sin(x)
-)
+MIN_TAYLOR_TIME_SEQ_ORDER = 4
+MAX_TAYLOR_TIME_SEQ_ORDER = 8
 
-MODELS_RANGE = range(0, len(models))
+def taylor_time_seq(y, order = MIN_TAYLOR_TIME_SEQ_ORDER, pool = None):
+    """
+        Args:
+            y (sequence of numbers): numpy.ndarray, list, set, tuple
+            order (int): MIN_TAYLOR_TIME_SEQ_ORDER <= order <=  MIN_TAYLOR_TIME_SEQ_ORDER
+            
+        Returns:
 
-def model_table(x, pool = None):
-    if pool is None:
-        processing_pool = multiprocessing.Pool(multiprocessing.cpu_count())
-    else:
-        processing_pool = pool
-
-    y = tuple(processing_pool.map(lambda model: model(x), MODELS))
+    """
