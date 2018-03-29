@@ -38,15 +38,15 @@ if __name__ == "__main__":
     print("ONE-WAY ANOVA")    
     print("\tCritical Values: F =%12.4f, P=%8.5f" % (F, P))
     print("\tF-Test: Are all means equals (H0) ?  %s " % ("Reject" if P < alpha else "Don't Reject")  )
-    print("\tSST:\t\t\t%12.4f" % numeric.sum_of_squares_total(samples))    
-    print("\tSSE:\t\t\t%12.4f" % numeric.standard_squared_error(samples))
-    print("\tMSE:\t\t\t%12.4f" %numeric.mean_squared_error(samples))
+    print("\tSST:\t\t\t%12.4f" % numeric.Reductor.sum_of_squares_total(samples))    
+    print("\tSSE:\t\t\t%12.4f" % numeric.Reductor.standard_squared_error(samples))
+    print("\tMSE:\t\t\t%12.4f" %numeric.Reductor.mean_squared_error(samples))
     
     if P < alpha:
         print()
         print("\tConfidence Intervals:")
         for i in range(0, len(samples)):
-            mean, length = numeric.oneway_anova_interval(samples, i, alpha)
+            mean, length = numeric.Reductor.oneway_anova_interval(samples, i, alpha)
             print("\t%12.4f %12.4f" % (mean, length))
 
     print("PEARSON FOR INDEPENDENCE")
