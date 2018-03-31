@@ -1,16 +1,42 @@
 import numeric
 import numpy
+import pathos.multiprocessing as multiprocessing
+import numpy.linalg
 
 BASE_MODELS = [
-    lambda x, A, B, C, D, E, F: x,
-    lambda x, A, B, C, D, E, F: numpy.square(x),
-    lambda x, A, B, C, D, E, F: numpy.exp(x),
-    lambda x, A, B, C, D, E, F: numpy.log(x),
-    lambda x, A, B, C, D, E, F: numpy.cos(x),
-    lambda x, A, B, C, D, E, F: numpy.cos(x) + cos.sin(x),
-    lambda x, A, B, C, D, E, F: (A * numpy.square(x) + B * x + C) * numpy.exp(D * x) * (numpy.cos(E * x) + cos(F * y))
+    lambda x: x,
+    lambda x: numpy.square(x),
+    lambda x: numpy.exp(x),
+    lambda x: numpy.log(x),
+    lambda x: numpy.cos(x),
+    lambda x: numpy.cos(numpy.radians(x)) + numpy.sin(numpy.radians(x)),
+    lambda x: (numpy.cos(numpy.radians(x) + numpy.sin(numpy.radians(x)))) * numpy.exp(x),
 ]
 
+SAMPLE_LENGTH = 100
+
+def sample_model(fn):
+    length = SAMPLE_LENGTH
+    sequence = numpy.array(tuple(map(lambda x: fn(x+1), range(0, length))))    
+    model = numeric.Taylor.autoregressive_model(sequence)
+    return model
+
+def sample_model_with_noise(fn):
+    length = SAMPLE_LENGTH
+    sequence = numpy.array(tuple(map(lambda y: y + fn(y+1), numpy.abs(numpy.random.normal(0,1,length) * numpy.random.beta(2., 1., length) * 10))))
+    model = numeric.Taylor.autoregressive_model(sequence)
+    return model
+
+
 if __name__ == "__main__":
-    sequence = numpy.array(tuple(map(lambda x: numpy.log(2*x+2), range(0, 64))))
-    numeric.TaylorCoefficients(sequence)
+    models = tuple(map(sample_model, BASE_MODELS))
+    index = 1
+
+    for model in models:
+
+        try:
+            print(model.fit().rsquared)            
+        except:            
+            print("Model #%d failed" % index)
+
+        index += 1

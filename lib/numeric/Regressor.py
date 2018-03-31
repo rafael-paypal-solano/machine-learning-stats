@@ -5,6 +5,16 @@ import pathos.multiprocessing as multiprocessing
 MIN_TAYLOR_TIME_SEQ_ORDER = 1
 MAX_TAYLOR_TIME_SEQ_ORDER = 4
 
+class Regressor:
+    def taylor_series(y, order, order = MIN_TAYLOR_TIME_SEQ_ORDER, pool = None):
+        """
+            Args:
+                 y (sequence of numbers -- numpy.ndarray, list, set, tuple, etc -- ): This is an no-autoregressive time series.
+                 order (int): MIN_TAYLOR_TIME_SEQ_ORDER <= order <=  MIN_TAYLOR_TIME_SEQ_ORDER
+
+            Returns:
+                A Taylor time series.
+        """
 
 # class Regressor:    
 #     def __init__(y, order = MIN_TAYLOR_TIME_SEQ_ORDER, pool = None):
