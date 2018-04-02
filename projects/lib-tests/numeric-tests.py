@@ -38,4 +38,4 @@ def test_model(asserter, model):
         
 if __name__ == "__main__":
     test_model(lambda a: numpy.abs(a) > 0.80, sample_model)
-    test_model(lambda a: numpy.abs(a) < 0.30, sample_model_with_noise)
+    test_model(lambda a: numpy.abs(a) < 0.40, sample_model_with_noise)

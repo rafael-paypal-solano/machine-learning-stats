@@ -1,28 +1,14 @@
 import numpy
 from scipy import linalg
 import statsmodels.api as api
+import native
 
 MIN_TAYLOR_TIME_SEQ_ORDER = 1
 DEFAULT_TAYLOR_TIME_SEQ_ORDER = 6
 MAX_TAYLOR_TIME_SEQ_ORDER = 8
 
 def create_diff_matrix(y, order):
-    array = numpy.zeros((order+1, order+1))
-    r = range(0, order+1)
-
-    for i in r:
-        array[0, i] = y[i]
-
-    Q = range(1, order + 1)
-    for i in Q:
-        R = range(i, order + 1)
-        
-        for k in R:
-            array[i, k] = array[i-1, k] - array[i-1, k-1] 
-
-    
-    return array
-
+    return native.create_diff_matrix(y.astype(float), order)
 
 def fill_regressors_matrix(y, order, diff_matrix, X):
     diff = numpy.copy(diff_matrix)
@@ -35,11 +21,14 @@ def fill_regressors_matrix(y, order, diff_matrix, X):
     for I in vertical:
 
         #
-        #   TODO: Parallelize
+        #  Fills a Row.
         #        
         for K in horizontal:
             X[I,K] = diff[K, order]
-        
+
+        #
+        # Updates difference matrix.    
+        #        
         for i in Q:
 
             for k in range( i , order):
@@ -47,9 +36,6 @@ def fill_regressors_matrix(y, order, diff_matrix, X):
 
         diff[0, order] = y[m + I]    
 
-        #
-        #    TODO: Parallelize.
-        #
         for i in R:
             diff[i, order] = diff[i-1, order] - diff[i-1, order-1] 
 
