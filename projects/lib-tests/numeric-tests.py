@@ -23,20 +23,19 @@ def sample_model(fn):
 
 def sample_model_with_noise(fn):
     length = SAMPLE_LENGTH
-    sequence = numpy.array(tuple(map(lambda y: y + fn(y+1), numpy.abs(numpy.random.normal(0,1,length) * numpy.random.beta(2., 1., length) * 10))))
+    sequence = numpy.array(tuple(map(lambda y: numpy.random.normal(0,1) * 10 + fn(y+1), numpy.abs(numpy.random.normal(0,1,length) * numpy.random.beta(2., 1., length) * 10))))
     model = numeric.Taylor.autoregressive_model(sequence)
     return model
 
-
-if __name__ == "__main__":
-    models = tuple(map(sample_model, BASE_MODELS))
-    index = 1
+def test_model(asserter, model):
+    models = tuple(map(model, BASE_MODELS))
 
     for model in models:
+        print(model.fit().rsquared)
+        if  not asserter(model.fit().rsquared):
+            raise ValueError("Assertion failure")
 
-        try:
-            print(model.fit().rsquared)            
-        except:            
-            print("Model #%d failed" % index)
-
-        index += 1
+        
+if __name__ == "__main__":
+    test_model(lambda a: numpy.abs(a) > 0.80, sample_model)
+    test_model(lambda a: numpy.abs(a) < 0.30, sample_model_with_noise)
