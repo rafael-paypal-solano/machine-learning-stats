@@ -1,0 +1,5 @@
+# Shale Oil Extraction, Exercise 13.31 in Mathematical Statistics 7th Ed. #
+
+With the ongoing energy crisis, researchers for the major oil companies are attempting to find alternative sources of oil. It is known that some types of shale contain small amounts of oil that feasibly (if not economically) could be extracted. Four methods have been developed for extracting oil from shale, and the government has decided that some experimentation should be done to determine whether the methods differ significantly in the average amount of oil that each can extract from the shale. Method 4 is known to be the most expensive method to implement,and method 1 is the least expensive, so inferences about the differences in performance of these two methods are of particular interest. Sixteen bits of shale (of the same size) were randomly subjected to the four methods, with the results shown in the accompanying table (the units are in liters per cubic meter). All inferences are to be made with α = .05.
+
+(−.21, 4.21)

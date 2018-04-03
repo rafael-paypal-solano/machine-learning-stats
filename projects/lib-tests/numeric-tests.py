@@ -21,7 +21,7 @@ def sample_model(fn):
     model = numeric.Taylor.autoregressive_model(sequence)
     return model
 
-def sample_model_with_noise(fn):
+def sample_model_with_noise(fn): # Use Taylor
     length = SAMPLE_LENGTH
     sequence = numpy.array(tuple(map(lambda y: numpy.random.normal(0,1) * 10 + fn(y+1), numpy.abs(numpy.random.normal(0,1,length) * numpy.random.beta(2., 1., length) * 10))))
     model = numeric.Taylor.autoregressive_model(sequence)
@@ -37,5 +37,5 @@ def test_model(asserter, model):
 
         
 if __name__ == "__main__":
-    test_model(lambda a: numpy.abs(a) > 0.80, sample_model)
-    test_model(lambda a: numpy.abs(a) < 0.30, sample_model_with_noise)
+    test_model(lambda r2: numpy.abs(r2) > 0.80, sample_model) # r2 > 0.80 ==> Correlated sample points.
+    test_model(lambda r2: numpy.abs(r2) < 0.30, sample_model_with_noise) # r2 < 0.30 ==> Random sample points.

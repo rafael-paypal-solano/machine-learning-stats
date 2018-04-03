@@ -41,14 +41,15 @@ if __name__ == "__main__":
     print("\tSST:\t\t\t%12.4f" % numeric.Reductor.sum_of_squares_total(samples))    
     print("\tSSE:\t\t\t%12.4f" % numeric.Reductor.standard_squared_error(samples))
     print("\tMSE:\t\t\t%12.4f" %numeric.Reductor.mean_squared_error(samples))
-    
-    if P < alpha:
-        print()
-        print("\tConfidence Intervals:")
-        for i in range(0, len(samples)):
-            mean, length = numeric.Reductor.oneway_anova_interval(samples, i, alpha)
-            print("\t%12.4f %12.4f" % (mean, length))
 
-    print("PEARSON FOR INDEPENDENCE")
-    
-    
+    print("\tConfidence Intervals:")
+    for i in range(0, len(samples)):
+        mean, length, column = numeric.ANOVA.oneway_anova_interval(samples, i, alpha)
+        print("\t\t%s=%12.4f ± %12.4f" % (dataset.columns[column], mean, length))
+
+
+    print("\tDifference Intervals:")
+    diff_intervals = numeric.ANOVA.oneway_anova_diff_intervals(samples, alpha)
+    for diff_interval in diff_intervals:
+        mean, length, columns = diff_interval
+        print("\t\t%s and %s =%12.4f ± %12.4f" % (dataset.columns[columns[0]], dataset.columns[columns[1]], mean, length))
