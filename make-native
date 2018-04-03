@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#
+#   TODO: Use a decent build system.
+#
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SOLUTION_DIR=$SCRIPT_DIR
+PYTHON3="/opt/anaconda3/bin/python3"
+$PYTHON3 "$SOLUTION_DIR/lib/native/setup.py" build_ext --inplace

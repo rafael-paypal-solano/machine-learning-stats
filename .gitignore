@@ -1,2 +1,5 @@
 data/output
+*.so
 *.pyc
+*.o
+lib/native/*.c

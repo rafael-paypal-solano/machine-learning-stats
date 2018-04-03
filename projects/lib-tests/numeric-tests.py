@@ -37,5 +37,5 @@ def test_model(asserter, model):
 
         
 if __name__ == "__main__":
-    test_model(lambda r2: numpy.abs(r2) > 0.80, sample_model) # r2 > 0.80 ==> Correlated sample points.
-    test_model(lambda r2: numpy.abs(r2) < 0.30, sample_model_with_noise) # r2 < 0.30 ==> Random sample points.
+    test_model(lambda a: numpy.abs(a) > 0.80, sample_model)
+    test_model(lambda a: numpy.abs(a) < 0.40, sample_model_with_noise)
