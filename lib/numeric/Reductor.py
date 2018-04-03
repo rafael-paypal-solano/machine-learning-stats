@@ -14,7 +14,7 @@ class Reductor:
     def correction_for_mean(clazz, samples, pool = None): # aka CM
         """
             Args:
-                samples (tuple of sequences): A sequence is a tuple, list, set or 1-dim numpy.ndarray .
+                samples (2d array like): .-
                 pool (optional pathos.multiprocessing.Pool or multiprocessing.Pool): Required to parallelize operations.            
             Return:
                 (sum of all observations)^2 divided by # of observations 
@@ -28,11 +28,48 @@ class Reductor:
         return (s / n)
 
 
+    @classmethod
+    def mean_block(clazz, samples, pool = None): # CM for randomized blocks
+        """
+            Args:
+                samples (2d array like): .-
+                pool (optional pathos.multiprocessing.Pool or multiprocessing.Pool): Required to parallelize operations.            
+            Return:
+                (sum of all observations)^2 divided by b*n where b == # of blocks and k == # of treatments.
+        """    
+
+        processing_pool = init_pool(pool)
+        array = samples if type(samples) is numpy.ndarray else numpy.array(samples)
+        k = array.shape[0]
+        b = array.shape[1]
+        n = b * k
+        s = numpy.sum(processing_pool.map(lambda x: numpy.sum(x), samples))
+        return (s / n)
+
+    @classmethod
+    def correction_for_mean_block(clazz, samples, pool = None): # Mean for randomized blocks
+        """
+            Args:
+                samples (2d array like): .-
+                pool (optional pathos.multiprocessing.Pool or multiprocessing.Pool): Required to parallelize operations.            
+            Return:
+                (sum of all observations)^2 divided by b*n where b == # of blocks and k == # of treatments.
+        """    
+
+        processing_pool = init_pool(pool)
+        array = samples if type(samples) is numpy.ndarray else numpy.array(samples)
+        k = array.shape[0]
+        b = array.shape[1]
+        n = b * k
+        s = numpy.square(numpy.sum(processing_pool.map(lambda x: numpy.sum(x), samples)))
+        return (s / n)
+
+
     @classmethod    
     def sum_of_squares_total(clazz, samples, pool = None): # aka SST
         """
             Args:
-                samples (tuple of sequences): A sequence is a tuple, list, set or 1-dim numpy.ndarray .
+                samples (2d array like): .-
                 pool (optional pathos.multiprocessing.Pool or multiprocessing.Pool): Required to parallelize operations.            
             Return:
                 The sum of the squares of the difference of the dependent variable and its mean (https://en.wikipedia.org/wiki/Total_sum_of_squares)
@@ -49,7 +86,7 @@ class Reductor:
     def total_ss(clazz, samples, pool = None): # aka Total SS
         """
             Args:
-                samples (tuple of sequences): A sequence is a tuple, list, set or 1-dim numpy.ndarray .
+                samples (2d array like): .-
                 pool (optional pathos.multiprocessing.Pool or multiprocessing.Pool): Required to parallelize operations.            
             Return:
                 Total SS
@@ -63,7 +100,7 @@ class Reductor:
     def standard_squared_error(clazz, samples, pool = None): # aka SSE
         """
             Args:
-                samples (tuple of sequences): A sequence is a tuple, list, set or 1-dim numpy.ndarray .
+                samples (2d array like): .-
                 pool (optional pathos.multiprocessing.Pool or multiprocessing.Pool): Required to parallelize operations.            
             Return:
                 SSE
@@ -74,7 +111,7 @@ class Reductor:
     def mean_squared_error(clazz, samples, pool =  None):# aka MSE
         """
             Args:
-                samples (tuple of sequences): A sequence is a tuple, list, set or 1-dim numpy.ndarray .
+                samples (2d array like): .-
                 pool (optional pathos.multiprocessing.Pool or multiprocessing.Pool): Required to parallelize operations.            
             Return:
                 The mean squared error (MSE) or mean squared deviation (MSD).
