@@ -39,15 +39,7 @@ def test_randomized_models():
     test_model(lambda a: numpy.abs(a) > 0.80, sample_model)
     test_model(lambda a: numpy.abs(a) < 0.40, sample_model_with_noise)
 
-def test_randomized_blocks_models():
-    sample = numpy.array((
-        (1.7, 2.1, 0.1, 2.2),
-        (2.3, 1.5, 2.3, 0.6),
-        (3.4, 2.6, 0.8, 1.6)
-    ))
-    mean = numeric.Reductor.correction_for_mean_block(sample)
-    print(mean)
 
 if __name__ == "__main__":
-    test_randomized_blocks_models()
+    test_randomized_models()
     

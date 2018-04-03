@@ -41,3 +41,15 @@ class ANOVA:
         indexes = itertools.combinations(range(0, len(samples)), 2)
         intervals = tuple(map(lambda index: ANOVA.oneway_anova_diff_interval(samples, index[0], index[1], alpha) , indexes))
         return intervals
+
+    @classmethod
+    def oneway_randomized_block(clazz, samples, alpha = 0.05):
+        """
+            Args:            
+                samples (2d array-like): A k * b array where k (rows) is the number of treatments whilst b (columns) is the number of blocks.
+                alpha (optional double): Defaults to 0.04.
+
+            Return:
+                (F-Statistic, P-Value): Tuple where F is the
+        """
+        pass

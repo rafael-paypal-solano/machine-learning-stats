@@ -8,4 +8,4 @@ PYTHON="/opt/anaconda3/bin/python3"
 PYTHONPATH="${SOLUTION_DIR}/lib"
 export PYTHONPATH
 
-$PYTHON "${SCRIPT_DIR}/anova-report.py" $1
+$PYTHON "${SCRIPT_DIR}/randomized-block.py" $1
