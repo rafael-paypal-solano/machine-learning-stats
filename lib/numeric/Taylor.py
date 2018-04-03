@@ -10,6 +10,9 @@ MAX_TAYLOR_TIME_SEQ_ORDER = 8
 def create_diff_matrix(y, order):
     return native.create_diff_matrix(y.astype(float), order)
 
+def update_diff_matrix(diff, order, y):
+    return native.update_diff_matrix(diff, order, y)
+
 def fill_regressors_matrix(y, order, diff_matrix, X):
     diff = numpy.copy(diff_matrix)
     vertical = range(0, X.shape[0])
@@ -26,18 +29,8 @@ def fill_regressors_matrix(y, order, diff_matrix, X):
         for K in horizontal:
             X[I,K] = diff[K, order]
 
-        #
-        # Updates difference matrix.    
-        #        
-        for i in Q:
+        update_diff_matrix(diff, order, y[m + I])
 
-            for k in range( i , order):
-                diff[i, k] = diff[i, k + 1]        
-
-        diff[0, order] = y[m + I]    
-
-        for i in R:
-            diff[i, order] = diff[i-1, order] - diff[i-1, order-1] 
 
 def create_regression_model(y, order, diff_matrix):
     l = len(y)

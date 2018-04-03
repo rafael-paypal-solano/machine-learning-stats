@@ -1,1 +1,1 @@
-from .matrices import create_diff_matrix
+from .matrices import create_diff_matrix, update_diff_matrix
