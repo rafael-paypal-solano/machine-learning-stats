@@ -30,6 +30,10 @@ def cell_sum(samples, processing_pool):
 
 class Reductor:
 
+    @classmethod
+    def to_array(clazz, samples):
+        return to_array(samples)
+
     @classmethod    
     def correction_for_mean(clazz, samples, pool = None): # aka CM
         """
@@ -138,30 +142,37 @@ class Reductor:
         return (s / n)
 
     @classmethod
-    def sum_of_squares_block(clazz, samples): # SSB
+    def sum_of_squares_block(clazz, samples, cm = None): # SSB
         array = to_array(samples)
         k = array.shape[0]
         column_sum = numpy.sum(numpy.square(numpy.sum(array, axis=0))) / k        
-        cm = Reductor.correction_for_mean_block(array)
-#       print(column_sum, cm, k)
+
+        if cm is None:
+            cm = Reductor.correction_for_mean_block(array)
+
         ssb = column_sum- cm
         return ssb
 
     @classmethod
-    def sum_of_squares_total_block(clazz, samples): # SST for randomized blocks
+    def sum_of_squares_total_block(clazz, samples, cm = None): # SST for randomized blocks
         array = to_array(samples)
         b = array.shape[1]        
         row_sum = numpy.sum(numpy.square(numpy.sum(array, axis=1))) / b        
-        cm = Reductor.correction_for_mean_block(array)
-#       print(row_sum, cm, b)
+
+        if cm is None:
+            cm = Reductor.correction_for_mean_block(array)
+
         sst = row_sum- cm
         return sst
 
     @classmethod    
-    def standard_squared_error_block(clazz, samples): # aka SSE blocks
+    def standard_squared_error_block(clazz, samples, cm = None): # aka SSE blocks
         array = to_array(samples)
         s = numpy.sum(numpy.square(array))
-        cm = Reductor.correction_for_mean_block(array)        
+        
+        if cm is None:
+            cm = Reductor.correction_for_mean_block(array)        
+
         ssb = Reductor.sum_of_squares_block(array)
         sst = Reductor.sum_of_squares_total_block(array)
         total_ss = s - cm

@@ -9,6 +9,8 @@ def init_pool(pool):
         return multiprocessing.Pool(multiprocessing.cpu_count())
 
     return pool
+
+
 class ANOVA:
 
     @classmethod
@@ -43,13 +45,13 @@ class ANOVA:
         return intervals
 
     @classmethod
-    def oneway_randomized_block(clazz, samples, alpha = 0.05):
+    def randomized_block(clazz, samples, alpha = 0.05):
         """
             Args:            
                 samples (2d array-like): A k * b array where k (rows) is the number of treatments whilst b (columns) is the number of blocks.
                 alpha (optional double): Defaults to 0.04.
 
             Return:
-                (F-Statistic, P-Value): Tuple where F is the
+                ANOVARandomizedBlock: 
         """
-        pass
+        return ANOVARandomizedBlock(samples)

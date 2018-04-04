@@ -1,0 +1,4 @@
+# Soil Preparation, Exercise 13.45 in Mathematical Statistics 7th Ed. #
+
+An experiment was conducted to determine the effect of three methods of soil preparation on the first-year growth of slash pine seedlings. Four locations (state forest lands) were selected,and each location was divided into three plots. Because soil fertility within a location was likely to be more homogeneous than between locations, a randomized block design was employed, using locations as blocks. The methods of soil preparation were A (no preparation), B (light fertilization), and C (burning). Each soil preparation was randomly applied to a plot within each location. On each plot the same number of seedlings was planted, and the observation recorded was the average first-year growth (in centimeters) of the seedlings on each plot. These observations are reproduced in the accompanying table.
+
