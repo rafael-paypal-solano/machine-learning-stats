@@ -2,6 +2,9 @@ import numpy
 import pathos.multiprocessing as multiprocessing
 import scipy.stats as stats
 
+#
+#   TODO: Make randomized block functions GPU Aware: If GPU is present use it, otherwise default to numpy (http://stsievert.com/blog/2016/07/01/numpy-gpu/).
+#
 def to_array(samples):
     if type(samples) is numpy.ndarray:
         return samples
@@ -50,7 +53,7 @@ class Reductor:
 
         return (s / n)
 
-
+        
     @classmethod    
     def sum_of_squares_total(clazz, samples, pool = None): # aka SST
         """
@@ -107,6 +110,18 @@ class Reductor:
         return Reductor.standard_squared_error(samples, pool) / ( n - len(samples))
 
     @classmethod
+    def sum_of_squares_block(clazz, samples, cm = None): # SSB
+        array = to_array(samples)
+        k = array.shape[0]
+        column_sum = numpy.sum(numpy.square(numpy.sum(array, axis=0))) / k        
+
+        if cm is None:
+            cm = Reductor.correction_for_mean_block(array)
+
+        ssb = column_sum- cm
+        return ssb
+
+    @classmethod
     def mean_block(clazz, samples): # Mean for randomized blocks
         """
             Args:
@@ -141,17 +156,7 @@ class Reductor:
         s = numpy.square(numpy.sum(array))
         return (s / n)
 
-    @classmethod
-    def sum_of_squares_block(clazz, samples, cm = None): # SSB
-        array = to_array(samples)
-        k = array.shape[0]
-        column_sum = numpy.sum(numpy.square(numpy.sum(array, axis=0))) / k        
 
-        if cm is None:
-            cm = Reductor.correction_for_mean_block(array)
-
-        ssb = column_sum- cm
-        return ssb
 
     @classmethod
     def sum_of_squares_total_block(clazz, samples, cm = None): # SST for randomized blocks
@@ -166,7 +171,7 @@ class Reductor:
         return sst
 
     @classmethod    
-    def standard_squared_error_block(clazz, samples, cm = None): # aka SSE blocks
+    def standard_squared_error_block(clazz, samples, cm = None): # SSE for randomized blocks
         array = to_array(samples)
         s = numpy.sum(numpy.square(array))
         
@@ -180,4 +185,4 @@ class Reductor:
 
         return sse
 
-    
+        

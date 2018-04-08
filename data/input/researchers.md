@@ -1,0 +1,3 @@
+# Randomized Block Design ANOVA in SPSS ( https://ssor.vcu.edu/media/statistics/resources/spss/SPSS.Blocks.PC.pdf ) # 
+
+An experiment is conducted to compare four different mixtures of the components oxidizer, binder, and  fuel  used  in  the  manufacturing  of  rocket  propellant.    To  compare  the  four mixtures,  five  different  samples of propellant are prepared from each mixture and readied for testing.  Each of five investigators is randomly assigned one sample of each of the four mixtures and asked to measure the propellant thrust.  These data are summarized next. Use α = 0.05.
