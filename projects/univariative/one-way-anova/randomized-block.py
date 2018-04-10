@@ -34,10 +34,10 @@ if __name__ == "__main__":
     print("MSB = %8.2f, MST = %8.2f, MSE = %8.2f" % (block.msb, block.mst, block.mse))
     print("F(T) = %8.2f, F(B) = %8.2f" % (block.Ft, block.Fb))
     print("P(T) = %f, P(B) = %f" % (block.Pt, block.Pb))
+    
     print()
-
     print_intervals(block.turkey_intervals, "TURKEY-KRAMMER INTERVALS")
-    print()
 
+    print()
     print_intervals(block.bonferroni_intervals, "BONFERRONI INTERVALS")
     
