@@ -12,23 +12,29 @@ import numpy
 #       http://faculty.fiu.edu/~howellip/anova23_bon.pdf (Summarizes all formulas)
 #       https://ssor.vcu.edu/media/statistics/resources/spss/SPSS.Blocks.PC.pdf (Example for turkey-krammer intervals)
 #       https://www.spcforexcel.com/knowledge/comparing-processes/bonferronis-method (Example for bonferrony intervals)
-#
+#       http://www2.hawaii.edu/~taylor/z631/multcomp.pdf
 
-def create_turkey_intervals(row_mean, mse, alpha, k, b, df, pairs): # "Which treatment means are significantly different from each other?"    
+# Best available when  confidence intervals are needed  or sample sizes are not equal
+# Which treatment means are significantly different from each other?"
+# 
+def create_turkey_intervals(row_mean, row_var, mse, alpha, k, b, df, pairs):  # Which treatment means are significantly different from each other ? (small sample)
     Q = qsturng(1-alpha, k, df)
     L = Q * numpy.sqrt(mse/b)
         
     return tuple(map(lambda pair: ANOVATreatmentInterval(row_mean[pair[0]] - row_mean[pair[1]],  L, pair), pairs))
 
-def create_bonferroni_intervals(row_mean, mse, alpha, k, b, df, pairs): # "Which treatment means are significantly different from each other?"
-    c = k*(k-1) / 2
-    T = stats.t.isf(alpha/(2*c), df)
-    L = T * numpy.sqrt(2*mse/b)
+# Extremely simple but not powerful
+# 
+#
+def create_bonferroni_intervals(row_mean, row_var, mse, alpha, k, b, df, pairs): # Which treatment means are significantly different from each other ? (large sample)
+    c = k * (k-1) / 2
+    T = stats.t.isf(alpha/(2*k), df)
+    L = T * numpy.sqrt((2 * mse)/b)
     
     return tuple(map(lambda pair: ANOVATreatmentInterval(row_mean[pair[0]] - row_mean[pair[1]],  L, pair), pairs))
 
 class ANOVARandomizedBlock:
-    def __init__(self,sample, alpha=0.05):
+    def __init__(self, sample, alpha=0.05):
         array = Reductor.to_array(sample)
         self.__k__ = sample.shape[0]
         self.__b__ = sample.shape[1]        
@@ -48,9 +54,10 @@ class ANOVARandomizedBlock:
         self.__Pb__ = stats.f.sf(self.Fb, self.b-1, self.df)
 
         row_mean = numpy.mean(array, axis=1)        
+        row_var = numpy.var(array, axis=1)
         row_pairs = sorted(combinations(range(0, len(row_mean)), 2), key = lambda p: p[0])        
-        self.__turkey_intervals__ = create_turkey_intervals(row_mean, self.mse, alpha, self.k, self.b, self.df, row_pairs)
-        self.__bonferroni_intervals__ = create_bonferroni_intervals(row_mean, self.mse, alpha, self.k, self.b, self.df, row_pairs)
+        self.__turkey_intervals__ = create_turkey_intervals(row_mean, row_var, self.mse, alpha, self.k, self.b, self.df, row_pairs)
+        self.__bonferroni_intervals__ = create_bonferroni_intervals(row_mean, row_var, self.mse, alpha, self.k, self.b, self.df, row_pairs)
         
 
     @property
