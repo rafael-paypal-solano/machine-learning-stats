@@ -3,7 +3,9 @@ import pathos.multiprocessing as multiprocessing
 import scipy.stats as stats
 
 #
-#   TODO: Make randomized block functions GPU Aware: If GPU is present use it, otherwise default to numpy (http://stsievert.com/blog/2016/07/01/numpy-gpu/).
+#   TODO: 
+#    1) Install CuPy https://docs-cupy.chainer.org/en/stable/install.html#dependencies
+#    2) Make randomized block functions GPU Aware: If GPU is present use it, otherwise default to numpy (http://stsievert.com/blog/2016/07/01/numpy-gpu/).
 #
 def to_array(samples):
     if type(samples) is numpy.ndarray:
