@@ -34,7 +34,7 @@ def cell_sum(samples, processing_pool):
 
 class GPUReductor:
     pass
-    
+
 class CPUReductor:
     @classmethod
     def mean_block(clazz, samples): # Mean for randomized blocks
@@ -44,8 +44,6 @@ class CPUReductor:
             Return:
                 (double): Mean for randomized blocks
         """    
-
-        processing_pool = init_pool(pool)
         array = samples if type(samples) is numpy.ndarray else numpy.array(samples)
         k = array.shape[0]
         b = array.shape[1]
@@ -130,6 +128,7 @@ class CPUReductor:
         return sse
 
 class Reductor:
+    implementation = CPUReductor
 
     @classmethod
     def to_array(clazz, samples):
@@ -218,13 +217,7 @@ class Reductor:
                 (double): Mean for randomized blocks
         """    
 
-        processing_pool = init_pool(pool)
-        array = samples if type(samples) is numpy.ndarray else numpy.array(samples)
-        k = array.shape[0]
-        b = array.shape[1]
-        n = b * k
-        s = numpy.sum(array)
-        return (s / n)
+        return clazz.implementation.mean_block(samples)
 
     @classmethod
     def correction_for_mean_block(clazz, samples): # CM for randomized blocks
@@ -235,12 +228,7 @@ class Reductor:
                 (double): CM for randomized blocks
         """    
 
-        array = to_array(samples)
-        k = array.shape[0]
-        b = array.shape[1]
-        n = b * k
-        s = numpy.square(numpy.sum(array))
-        return (s / n)
+        return clazz.implementation.correction_for_mean_block(samples)
 
     @classmethod
     def sum_of_squares_block(clazz, samples, cm = None): # SSB
@@ -251,15 +239,7 @@ class Reductor:
             Return:
                 (double): Sum of squares for randomized block
         """      
-        array = to_array(samples)
-        k = array.shape[0]
-        column_sum = numpy.sum(numpy.square(numpy.sum(array, axis=0))) / k        
-
-        if cm is None:
-            cm = Reductor.correction_for_mean_block(array)
-
-        ssb = column_sum- cm
-        return ssb
+        return clazz.implementation.sum_of_squares_block(samples, cm)
 
     @classmethod
     def sum_of_squares_total_block(clazz, samples, cm = None): # SST for randomized blocks
@@ -270,15 +250,7 @@ class Reductor:
             Return:
                 (double): SST for randomized blocks
         """      
-        array = to_array(samples)
-        b = array.shape[1]        
-        row_sum = numpy.sum(numpy.square(numpy.sum(array, axis=1))) / b        
-
-        if cm is None:
-            cm = Reductor.correction_for_mean_block(array)
-
-        sst = row_sum- cm
-        return sst
+        return clazz.implementation.sum_of_squares_total_block(samples, cm)
 
     @classmethod    
     def standard_squared_error_block(clazz, samples, cm = None): # SSE for randomized blocks
@@ -289,17 +261,6 @@ class Reductor:
             Return:
                 (double): SSE for randomized blocks
         """     
-        array = to_array(samples)
-        s = numpy.sum(numpy.square(array))
-        
-        if cm is None:
-            cm = Reductor.correction_for_mean_block(array)        
-
-        ssb = Reductor.sum_of_squares_block(array)
-        sst = Reductor.sum_of_squares_total_block(array)
-        total_ss = s - cm
-        sse = total_ss - ssb - sst
-
-        return sse
+        return clazz.implementation.standard_squared_error_block(samples, cm)
 
         
