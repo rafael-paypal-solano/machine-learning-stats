@@ -8,6 +8,6 @@ PYTHON="/opt/anaconda3/bin/python3"
 PYTHONPATH="${SOLUTION_DIR}/lib"
 PYTHONMATH='CPU'
 export PYTHONPATH
-export PYTHONMATH
+
 
 $PYTHON "${SCRIPT_DIR}/randomized-block.py" $1

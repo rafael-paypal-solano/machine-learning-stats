@@ -1,8 +1,10 @@
-from .Reductor import Reductor
 import scipy.stats as stats
 from itertools import combinations
 from statsmodels.stats.libqsturng import qsturng
 from .ANOVATreatmentInterval import ANOVATreatmentInterval
+from environment import Arrays
+from .CPUReductor import CPUReductor
+from environment import Arrays
 
 # TODO: Finish create_bonferroni_intervals following the specs in the fouth link in the list below this line.
 import numpy
@@ -34,17 +36,17 @@ def create_bonferroni_intervals(row_mean, row_var, mse, alpha, k, b, df, pairs):
     return tuple(map(lambda pair: ANOVATreatmentInterval(row_mean[pair[0]] - row_mean[pair[1]],  L, pair), pairs))
 
 class ANOVARandomizedBlock:
-    def __init__(self, sample, alpha=0.05):
-        array = Reductor.to_array(sample)
-        self.__k__ = sample.shape[0]
-        self.__b__ = sample.shape[1]        
+    def __init__(self, array, alpha=0.05, reductor = CPUReductor):
+        self.__k__ = array.shape[0]
+        self.__b__ = array.shape[1]        
         self.__n__ = self.b * self.k
-        self.__cm__ = Reductor.correction_for_mean_block(array)       
-        self.__ssb__ = Reductor.sum_of_squares_block(array, self.cm)    # Blocks/Subjects
-        self.__sst__ = Reductor.sum_of_squares_total_block(array, self.cm) #  Treatments
-        self.__sse__ = Reductor.standard_squared_error_block(array, self.cm)
+        self.__cm__ = reductor.correction_for_mean_block(array)       
+        self.__ssb__ = reductor.sum_of_squares_block(array, self.cm)    # Blocks/Subjects
+        self.__sst__ = reductor.sum_of_squares_total_block(array, self.cm) #  Treatments
+        self.__sse__ = reductor.standard_squared_error_block(array, self.cm)
         self.__df__ = self.n - self.k - self.b + 1
 
+        
         self.__mst__ = self.sst / (self.k-1)
         self.__msb__ = self.ssb / (self.b-1)
         self.__mse__ = self.sse / self.df
@@ -53,8 +55,8 @@ class ANOVARandomizedBlock:
         self.__Pt__ = stats.f.sf(self.Ft, self.k-1, self.df)
         self.__Pb__ = stats.f.sf(self.Fb, self.b-1, self.df)
 
-        row_mean = numpy.mean(array, axis=1)        
-        row_var = numpy.var(array, axis=1)
+        row_mean = Arrays.mean(array, axis=1)           
+        row_var = Arrays.var(array, axis=1)        
         row_pairs = sorted(combinations(range(0, len(row_mean)), 2), key = lambda p: p[0])        
         self.__turkey_intervals__ = create_turkey_intervals(row_mean, row_var, self.mse, alpha, self.k, self.b, self.df, row_pairs)
         self.__bonferroni_intervals__ = create_bonferroni_intervals(row_mean, row_var, self.mse, alpha, self.k, self.b, self.df, row_pairs)

@@ -3,7 +3,11 @@ import sys
 from scipy import stats
 import numpy
 import numeric
-
+from numeric import Reductor, CPUReductor, GPUReductor
+import pycuda.autoinit
+import pycuda.gpuarray
+import skcuda.misc
+skcuda.misc.init()
 #
 # Credits https://academic.macewan.ca/burok/Stat252/notes/RBD.pdf
 # https://docs.scipy.org/doc/scipy/reference/tutorial/stats/continuous.html
@@ -23,14 +27,10 @@ def print_intervals(intervals, title):
                 interval.mean + interval.length)
             )
 
-if __name__ == "__main__":
-    input_file = sys.argv[1]
+def print_report(array, reductor):
     alpha = 0.05
-    sample = pandas.read_csv(input_file,  infer_datetime_format = True)    
-    
-    print("STATISTICS")
-    block = numeric.ANOVARandomizedBlock(sample)
-    print("SSB = %8.2f, SST = %8.2f, SSE = %8.2f" % (block.ssb, block.sst, block.sse))
+    block = numeric.ANOVARandomizedBlock(array, 0.05, reductor)
+    print("SSB = %8.2f, SST = %8.2f, SSE = %8.2f, CM=%8.2f" % (block.ssb, block.sst, block.sse, block.cm))
     print("MSB = %8.2f, MST = %8.2f, MSE = %8.2f" % (block.msb, block.mst, block.mse))
     print("F(T) = %8.2f, F(B) = %8.2f" % (block.Ft, block.Fb))
     print("P(T) = %f, P(B) = %f" % (block.Pt, block.Pb))
@@ -40,4 +40,13 @@ if __name__ == "__main__":
 
     print()
     print_intervals(block.bonferroni_intervals, "BONFERRONI INTERVALS")
+
+if __name__ == "__main__":
     
+    
+    input_file = sys.argv[1]
+    
+    array = pandas.read_csv(input_file,  infer_datetime_format = True).values.astype(numpy.float64)
+
+    print_report(array, CPUReductor)
+    print_report(pycuda.gpuarray.to_gpu(array), GPUReductor)

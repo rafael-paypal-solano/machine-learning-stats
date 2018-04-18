@@ -7,17 +7,20 @@ import pycuda
 import skcuda.misc
 import skcuda.linalg
 from numeric import GPUReductor
-
-
+import pandas
+import sys
 
 if __name__ == "__main__":
-    a = numpy.array(
-        (
-            (1,   3.0, 5),
-            (7.0, 11, 9),
-            (13, 17.0, 19),
-        )
-    )
+    input_file = sys.argv[1]    
+    a = pandas.read_csv(input_file,  infer_datetime_format = True).values.astype(numpy.float64)
+    
+#    a = numpy.array(
+#        (
+#            (1,   3.0, 5),
+#            (7.0, 11, 9),
+#            (13, 17.0, 19),
+#        )
+#    )
     b = Arrays.to_array(a)
 
     print(type(a), type(b))

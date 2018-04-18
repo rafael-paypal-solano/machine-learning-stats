@@ -1,42 +1,17 @@
-from .Info import Info
+from .Info import InfoSingleton as Info
 from pycuda.gpuarray import GPUArray
-import pycuda.gpuarray
 import numpy
 import pycuda
 import skcuda.misc
-
-skcuda.misc.init()
+import pandas
 
 def gpu_sum_along_axis(array, axis = None): # TODO: Forget skuda and use kernel functions !!!
     if axis is None:
         return pycuda.gpuarray.sum(array)
-    shape = (
-        array.shape[0] if axis == 0 else 1,
-        array.shape[1] if axis == 1 else 1
-    )
     
-    out = skcuda.misc.sum(array, axis = axis)
-    return out
+    return skcuda.misc.sum(array, axis = axis)
 
 class Arrays:
-    @classmethod
-    def create(clazz, sample):        
-        if type(sample) is GPUArray:
-            return sample
-
-        if Info.gpu_present():
-            if type(sample) is numpy.ndarray:
-                return pycuda.gpuarray.to_gpu(sample)
-            else:
-                return pycuda.gpuarray.to_gpu(numpy.array(sample))
-
-        else:
-            if type(sample) is numpy.ndarray:
-                return sample
-            else:
-                return numpy.array(sample)
-            
-
     @classmethod
     def sum(clazz, array, axis = None):
         """
@@ -46,13 +21,75 @@ class Arrays:
             Return:
                 Sum of all elements in the provided array
         """
-        
-        if not (type(array) is numpy.ndarray or type(array) is GPUArray):
+        array_type = type(array)
+
+        if not (array_type is numpy.ndarray or array_type is GPUArray):
             raise ValueError('array argument type must be either numpy.ndarray or GPUArray')
         
-        if type(array) is numpy.ndarray:
+        if array_type is numpy.ndarray:
             return numpy.sum(array, axis = axis)
         
-        return gpu_sum_along_axis(array, axis)
-    
+        return skcuda.misc.sum(array, axis = axis)
+
+    @classmethod
+    def mean(clazz, array, axis = None):
+        """
+            Args:
+                array (numpy.ndarray or pycuda.gpuarray.GPUArray): 2D array
+                axis (int): like numpy.ndarray.sum's axis parameter
+            Return:
+                Sum of all elements in the provided array
+        """
+        array_type = type(array)
+
+        if not (array_type is numpy.ndarray or array_type is GPUArray):
+            raise ValueError('array argument type must be either numpy.ndarray or GPUArray')
         
+        if array_type is numpy.ndarray:
+            return numpy.mean(array, axis = axis)
+        
+        return skcuda.misc.mean(array, axis = axis).get()
+
+    @classmethod
+    def var(clazz, array, axis = None):
+        """
+            Args:
+                array (numpy.ndarray or pycuda.gpuarray.GPUArray): 2D array
+                axis (int): like numpy.ndarray.sum's axis parameter
+            Return:
+                Sum of all elements in the provided array
+        """
+        array_type = type(array)
+
+        if not (array_type is numpy.ndarray or array_type is GPUArray):
+            raise ValueError('array argument type must be either numpy.ndarray or GPUArray')
+        
+        if array_type is numpy.ndarray:
+            return numpy.var(array, axis = axis)
+        
+        return skcuda.misc.var(array, axis = axis).get()
+
+    @classmethod
+    def to_array(clazz, samples):
+        """
+            Args:
+                samples(pandas.DataFrame, numpy.ndarray or pycuda.gpuarray.GPUArray): Source data
+
+            Returns:
+                if samples is a pandas.DataFrame, then it converts it into a numpy.ndarray or pycuda.gpuarray.GPUArray depending on gpu availability
+        """
+
+        if pycuda.driver.Device.count() == 0:
+            if (type(samples) is numpy.ndarray) or (type(samples) is pandas.DataFrame):
+                return samples
+            else:
+                return numpy.array(samples)
+
+        if type(samples) is pycuda.gpuarray.GPUArray:
+            return samples
+        elif type(samples) is pandas.DataFrame:
+            return pycuda.gpuarray.to_gpu(samples.values)
+        else:
+            return pycuda.gpuarray.to_gpu(numpy.array(samples))        
+
+   

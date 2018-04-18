@@ -1,7 +1,16 @@
 import pycuda.autoinit
+import skcuda.misc
+
 
 class Info:
+    def __init__(self):        
+        if pycuda.driver.Device.count() > 0:
+            self.__gpu_present__ = True
+            skcuda.misc.init()
+        else:
+            self.__gpu_present__ = False
 
-    @classmethod
-    def gpu_present(clazz):
-        return pycuda.driver.Device.count() > 0
+    def gpu_present(self):
+        return self.__gpu_present__
+
+InfoSingleton = Info()

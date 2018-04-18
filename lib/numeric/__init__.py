@@ -1,4 +1,6 @@
 from .Reductor import Reductor
+from .GPUReductor import GPUReductor
+from .CPUReductor import CPUReductor
 from .ANOVA import ANOVA
 from .Taylor import Taylor
 from .Taylor import MIN_TAYLOR_TIME_SEQ_ORDER
