@@ -6,3 +6,4 @@
 
 from .ConvergenceState import ConvergenceState
 from .ConvergenceType import ConvergenceType
+from .GammaSequence import GammaSequence

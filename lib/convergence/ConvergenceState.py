@@ -16,11 +16,13 @@ class ConvergenceState(object):
     def n(self):
         return self.__n__
 
+    @property
     def in_range(self):
         return self.__in_range__
 
     def __call__(self, diff):
         abs_diff = abs(diff)
+        self.__diff__ = abs_diff
         self.__in_range__ = abs_diff < self.alpha
         self.__in_range_count__ += 1 if self.__in_range__ else 0
         self.__n__ += 1
