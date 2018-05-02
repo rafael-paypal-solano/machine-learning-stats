@@ -18,12 +18,12 @@ class ConvergenceType(Enum):
         Contains static functions to find out convergence nature of random sequences.
     """
     ALMOST_SURE = 0
-    MEAN=1,
-    PROBABILITY,
-    DISTRIBUTION
+    MEAN=1 
+    PROBABILITY = 2
+    DISTRIBUTION = 3
 
     @classmethod
-    def is_almost_surely(clazz, X, L, S, P, alpha = 5e-6, pool = None)
+    def is_almost_surely(clazz, X, L, S, P, alpha = 5e-6, pool = None):
         """
             Args:
                 X (iterable of functions): A sequence of random variables.
@@ -38,4 +38,5 @@ class ConvergenceType(Enum):
         """
         processing_pool = pool if not (pool is None) else multiprocessing.Pool(multiprocessing.cpu_count())    
         states = is_almost_surely_map(X, L, s, alpha, processing_pool)
-        in_range = sum(lambda state: state., )
+        in_range = sum(processing_pool.map(lambda state: 1 if state.in_range else 0, states))
+        return in_range

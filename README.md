@@ -1,0 +1,2 @@
+## Recommended Readings ##
+[7.2.3 Different Types of Convergence for Sequences of Random Variables](https://www.probabilitycourse.com/chapter7/7_2_3_different_types_of_convergence_for_sequences_of_random_variables.php)
