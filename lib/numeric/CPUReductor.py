@@ -100,3 +100,4 @@ class CPUReductor(Reductor):
         total_ss = s - cm
         sse = total_ss - ssb - sst
         return sse
+
